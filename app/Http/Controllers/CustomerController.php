@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\CustomerRequest;
+use App\Http\Requests\PostCodeRequest;
+
 use App\Models\Customer;
 use GuzzleHttp\Client;
 use LDAP\Result;
@@ -33,10 +35,10 @@ class CustomerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request)
+    public function create(PostCodeRequest $request)
     {
         $method = 'GET';
-        $zipcode = $request->postcode;
+        $zipcode = $request->post_code;
         $url = 'https://zipcloud.ibsnet.co.jp/api/search?zipcode=' . $zipcode;
 
         $client = new Client();
