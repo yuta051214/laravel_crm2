@@ -26,11 +26,11 @@
         @csrf
         <div>
             <label for="name">名前</label>
-            <input type="text" name="name" id="name">
+            <input type="text" name="name" id="name" value="{{ old('name') }}">
         </div>
         <div>
             <label for="email">メールアドレス</label>
-            <input type="text" name="email" id="email">
+            <input type="text" name="email" id="email" value="{{ old('email') }}">
         </div>
         <div>
             <label for="post_code">郵便番号</label>
@@ -42,7 +42,7 @@
         </div>
         <div>
             <label for="tel">電話番号</label>
-            <input type="text" name="tel" id="tel">
+            <input type="text" name="tel" id="tel" value="{{ old('') }}">
         </div>
         <input type="submit" value="登録">
     </form>
