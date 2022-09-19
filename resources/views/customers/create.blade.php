@@ -7,7 +7,9 @@
     <title>Document</title>
 </head>
 <body>
+    <h1>新規登録画面</h1>
     <form action="{{ route('customers.store') }}" method="post">
+        @csrf
         <div>
             <label for="name">名前</label>
             <input type="text" name="name" id="name">

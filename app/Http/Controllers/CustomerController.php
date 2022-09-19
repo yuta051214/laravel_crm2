@@ -17,7 +17,7 @@ class CustomerController extends Controller
     public function index()
     {
         $customers = Customer::all();
-        return view('customers.index', $customers);
+        return view('customers.index')->with(compact('customers'));
     }
 
 
@@ -62,7 +62,14 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $customer = new Customer;
+        $customer->name = $request->name;
+        $customer->email = $request->email;
+        $customer->post_code = $request->post_code;
+        $customer->address = $request->address;
+        $customer->tel = $request->tel;
+        $customer->save();
+        return redirect('/customers');
     }
 
     /**
@@ -73,7 +80,8 @@ class CustomerController extends Controller
      */
     public function show($id)
     {
-        //
+        $customer = Customer::find($id);
+        return view('customers.show')->with(compact('customer'));
     }
 
     /**
@@ -84,7 +92,8 @@ class CustomerController extends Controller
      */
     public function edit($id)
     {
-        //
+        $customer = Customer::find($id);
+        return view('customers.edit')->with(compact('customer'));
     }
 
     /**
@@ -96,7 +105,14 @@ class CustomerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $customer = Customer::find($id);
+        $customer->name = $request->name;
+        $customer->email = $request->email;
+        $customer->post_code = $request->post_code;
+        $customer->address = $request->address;
+        $customer->tel = $request->tel;
+        $customer->save();
+        return redirect('/customers');
     }
 
     /**
@@ -107,6 +123,8 @@ class CustomerController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $customer = Customer::find($id);
+        $customer->delete();
+        return redirect('/customers');
     }
 }
