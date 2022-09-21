@@ -42,19 +42,25 @@ class CustomerController extends Controller
         $url = 'https://zipcloud.ibsnet.co.jp/api/search?zipcode=' . $zipcode;
 
         $client = new Client();
-        try {
-            $response = $client->request($method, $url);
-            $body = $response->getBody();
-            $zip_cloud = json_decode($body, true);
+        $response = $client->request($method, $url);
+        $body = $response->getBody();
+        $zip_cloud = json_decode($body, true);
+
+        switch($zip_cloud['status']){
+        case 400:
+            return view('/customers/post_code', ['message' => $zip_cloud['message']]);
+            break;
+        case 500:
+            return view('/customers/post_code', ['message' => $zip_cloud['message']]);
+            break;
+        case 200:
             $result = $zip_cloud['results'][0];
             $address = $result['address1'].$result['address2'].$result['address3'];
             $post_code = $result['zipcode'];
-        }catch(\Throwable $th){
-            $address = null;
+            return view('customers.create')->with(compact('address', 'post_code'));
+            break;
         }
-        return view('customers.create')->with(compact('address', 'post_code'));
     }
-
 
 
     /**

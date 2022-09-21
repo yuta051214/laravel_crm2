@@ -8,20 +8,14 @@
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 </head>
 <body>
-    @if ($errors->any())
-        <div class="error">
-            <p>
-                <b>{{ count($errors) }}件のエラーがあります。</b>
-            </p>
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-
     <h1>郵便番号検索画面</h1>
+
+        @if (!empty($message))
+            <div class="error">
+                <ul><li>{{ $message }}</li></ul>
+            </div>
+        @endif
+
     <form action="{{ route('customers.create') }}" method="GET">
         <label for="post_code">郵便番号検索</label>
         <input type="text" name="post_code" id="post_code" placeholder="検索したい郵便番号" value="{{ old('post_code') }}">
