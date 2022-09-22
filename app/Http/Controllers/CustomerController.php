@@ -20,7 +20,7 @@ class CustomerController extends Controller
     public function index()
     {
         $customers = Customer::all();
-        return view('customers.index')->with(compact('customers'));
+        return view('customers.index', compact('customers'));
     }
 
 
@@ -51,10 +51,11 @@ class CustomerController extends Controller
             $result = $zip_cloud['results'][0];
             $address = $result['address1'] . $result['address2'] . $result['address3'];
             $post_code = $result['zipcode'];
-            return view('customers.create')->with(compact('address', 'post_code'));
+            return view('customers.create', compact('address', 'post_code'));
         } else {
             // エラー(statusが400、または500)時の処理
-            return view('/customers/post_code', ['message' => $zip_cloud['message']]);
+            $message = $zip_cloud['message'];
+            return view('/customers/post_code', compact('message'));
         }
     }
 
@@ -74,7 +75,7 @@ class CustomerController extends Controller
         $customer->address = $request->address;
         $customer->tel = $request->tel;
         $customer->save();
-        return redirect('/customers');
+        return redirect()->route('customers.index');
     }
 
     /**
@@ -86,7 +87,7 @@ class CustomerController extends Controller
     public function show($id)
     {
         $customer = Customer::find($id);
-        return view('customers.show')->with(compact('customer'));
+        return view('customers.show', compact('customer'));
     }
 
     /**
@@ -98,7 +99,7 @@ class CustomerController extends Controller
     public function edit($id)
     {
         $customer = Customer::find($id);
-        return view('customers.edit')->with(compact('customer'));
+        return view('customers.edit', compact('customer'));
     }
 
     /**
@@ -117,7 +118,7 @@ class CustomerController extends Controller
         $customer->address = $request->address;
         $customer->tel = $request->tel;
         $customer->save();
-        return redirect('/customers');
+        return redirect()->route('customers.index');
     }
 
     /**
@@ -130,6 +131,6 @@ class CustomerController extends Controller
     {
         $customer = Customer::find($id);
         $customer->delete();
-        return redirect('/customers');
+        return redirect()->route('customers.index');
     }
 }

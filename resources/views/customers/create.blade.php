@@ -42,7 +42,7 @@
         </div>
         <div>
             <label for="tel">電話番号</label>
-            <input type="text" name="tel" id="tel" value="{{ old('') }}">
+            <input type="text" name="tel" id="tel" value="{{ old('tel') }}">
         </div>
         <input type="submit" value="登録">
     </form>
