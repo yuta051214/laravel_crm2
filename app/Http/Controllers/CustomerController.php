@@ -46,19 +46,28 @@ class CustomerController extends Controller
         $body = $response->getBody();
         $zip_cloud = json_decode($body, true);
 
-        switch($zip_cloud['status']){
-        case 400:
-            return view('/customers/post_code', ['message' => $zip_cloud['message']]);
-            break;
-        case 500:
-            return view('/customers/post_code', ['message' => $zip_cloud['message']]);
-            break;
-        case 200:
+        // switch($zip_cloud['status']){
+        // case 400:
+        //     return view('/customers/post_code', ['message' => $zip_cloud['message']]);
+        //     break;
+        // case 500:
+        //     return view('/customers/post_code', ['message' => $zip_cloud['message']]);
+        //     break;
+        // case 200:
+        //     $result = $zip_cloud['results'][0];
+        //     $address = $result['address1'].$result['address2'].$result['address3'];
+        //     $post_code = $result['zipcode'];
+        //     return view('customers.create')->with(compact('address', 'post_code'));
+        //     break;
+        // }            ↓ if else文に変更
+
+        if ($zip_cloud['status'] == 200) {
             $result = $zip_cloud['results'][0];
-            $address = $result['address1'].$result['address2'].$result['address3'];
+            $address = $result['address1'] . $result['address2'] . $result['address3'];
             $post_code = $result['zipcode'];
             return view('customers.create')->with(compact('address', 'post_code'));
-            break;
+        } else {
+            return view('/customers/post_code', ['message' => $zip_cloud['message']]);
         }
     }
 

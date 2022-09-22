@@ -12,7 +12,7 @@
 
         @if (!empty($message))
             <div class="error">
-                <ul><li>{{ $message }}</li></ul>
+                <p>{{ $message }}</p>
             </div>
         @endif
 
