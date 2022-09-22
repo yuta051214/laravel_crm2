@@ -1,14 +1,8 @@
-<!DOCTYPE html>
-<html lang="ja">
+@extends('layouts.main')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Index</title>
-</head>
+@section('title', '顧客一覧')
 
-<body>
+@section('content')
     <h1>顧客一覧</h1>
     <table border="1">
         <tr>
@@ -31,5 +25,4 @@
         @endforeach
     </table>
     <button onclick="location.href='/customers/post_code'">新規作成</button>
-</body>
-</html>
+@endsection

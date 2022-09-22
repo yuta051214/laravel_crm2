@@ -1,15 +1,8 @@
-<!DOCTYPE html>
-<html lang="ja">
+@extends('layouts.main')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Edit</title>
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-</head>
+@section('title', '編集画面')
 
-<body>
+@section('content')
     <h1>編集画面</h1>
     @if ($errors->any())
         <div class="error">
@@ -50,7 +43,5 @@
         </div>
         <input type="submit" value="更新">
     </form>
-    <button onclick="location.href='{{ 'customers.index' }}'">戻る</button>
-</body>
-
-</html>
+    <button onclick="location.href='{{ route('customers.index') }}'">戻る</button>
+@endsection

@@ -1,13 +1,8 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Create</title>
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-</head>
-<body>
+@extends('layouts.main')
+
+@section('title', '新規登録画面')
+
+@section('content')
     @if ($errors->any())
         <div class="error">
             <p>
@@ -47,5 +42,4 @@
         <input type="submit" value="登録">
     </form>
     <button onclick="location.href='/customers/post_code'">郵便番号検索に戻る</button>
-</body>
-</html>
+@endsection
