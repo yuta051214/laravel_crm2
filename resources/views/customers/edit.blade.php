@@ -24,7 +24,8 @@
         </div>
     @endif
 
-    <form action="/customers/{{ $customer->id }}" method="post">
+    {{-- <form action="/customers/{{ $customer->id }}" method="post"> --}}
+        <form action="{{ route('customers.update', $customer) }}" method="post">
         @csrf
         @method('PATCH')
         <div>
@@ -49,7 +50,7 @@
         </div>
         <input type="submit" value="更新">
     </form>
-    <button onclick="location.href='/customers'">戻る</button>
+    <button onclick="location.href='{{ 'customers.index' }}'">戻る</button>
 </body>
 
 </html>

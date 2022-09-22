@@ -21,7 +21,7 @@
         </tr>
         @foreach ($customers as $customer)
             <tr>
-                <td><a href="{{ route('customers.show', $customer->id) }}">{{ $customer->id }}</a></td>
+                <td><a href="{{ route('customers.show', $customer) }}">{{ $customer->id }}</a></td>
                 <td>{{ $customer->name }}</td>
                 <td>{{ $customer->email }}</td>
                 <td>{{ $customer->post_code }}</td>

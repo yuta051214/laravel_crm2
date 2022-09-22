@@ -20,7 +20,7 @@ class CustomerController extends Controller
     public function index()
     {
         $customers = Customer::all();
-        return view('customers.index')->with(compact('customers'));
+        return view('customers.index', compact('customers'));
     }
 
 
@@ -42,19 +42,22 @@ class CustomerController extends Controller
         $url = 'https://zipcloud.ibsnet.co.jp/api/search?zipcode=' . $zipcode;
 
         $client = new Client();
-        try {
-            $response = $client->request($method, $url);
-            $body = $response->getBody();
-            $zip_cloud = json_decode($body, true);
-            $result = $zip_cloud['results'][0];
-            $address = $result['address1'].$result['address2'].$result['address3'];
-            $post_code = $result['zipcode'];
-        }catch(\Throwable $th){
-            $address = null;
-        }
-        return view('customers.create')->with(compact('address', 'post_code'));
-    }
+        $response = $client->request($method, $url);
+        $body = $response->getBody();
+        $zip_cloud = json_decode($body, true);
 
+        if ($zip_cloud['status'] == 200) {
+            // 正常(status: 200)時の処理
+            $result = $zip_cloud['results'][0];
+            $address = $result['address1'] . $result['address2'] . $result['address3'];
+            $post_code = $result['zipcode'];
+            return view('customers.create', compact('address', 'post_code'));
+        } else {
+            // エラー(statusが400、または500)時の処理
+            $message = $zip_cloud['message'];
+            return view('/customers/post_code', compact('message'));
+        }
+    }
 
 
     /**
@@ -72,7 +75,7 @@ class CustomerController extends Controller
         $customer->address = $request->address;
         $customer->tel = $request->tel;
         $customer->save();
-        return redirect('/customers');
+        return redirect()->route('customers.index');
     }
 
     /**
@@ -84,7 +87,7 @@ class CustomerController extends Controller
     public function show($id)
     {
         $customer = Customer::find($id);
-        return view('customers.show')->with(compact('customer'));
+        return view('customers.show', compact('customer'));
     }
 
     /**
@@ -96,7 +99,7 @@ class CustomerController extends Controller
     public function edit($id)
     {
         $customer = Customer::find($id);
-        return view('customers.edit')->with(compact('customer'));
+        return view('customers.edit', compact('customer'));
     }
 
     /**
@@ -115,7 +118,7 @@ class CustomerController extends Controller
         $customer->address = $request->address;
         $customer->tel = $request->tel;
         $customer->save();
-        return redirect('/customers');
+        return redirect()->route('customers.index');
     }
 
     /**
@@ -128,6 +131,6 @@ class CustomerController extends Controller
     {
         $customer = Customer::find($id);
         $customer->delete();
-        return redirect('/customers');
+        return redirect()->route('customers.index');
     }
 }

@@ -27,12 +27,12 @@
         </tr>
     </table>
 
-    <button onclick="location.href='/customers/{{ $customer->id }}/edit'">編集画面</button>
-    <form action="/customers/{{ $customer->id }}" method="post">
+    <button onclick="location.href='{{ route('customers.edit', $customer) }}'">編集画面</button>
+    <form action="{{ route('customers.destroy', $customer) }}" method="post">
         @csrf
         @method('DELETE')
         <input type="submit" value="削除する" onclick="if(!confirm('削除しますか？')){return false};">
     </form>
-    <button onclick="location.href='/customers'">一覧に戻る</button>
+    <button onclick="location.href='{{ route('customers.index') }}'">一覧に戻る</button>
 </body>
 </html>
