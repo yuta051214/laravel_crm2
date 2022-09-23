@@ -23,6 +23,8 @@
         </tr>
     </table>
 
+    <div id="map" style="height:50vh;"></div>
+
     <button onclick="location.href='{{ route('customers.edit', $customer) }}'">編集画面</button>
     <form action="{{ route('customers.destroy', $customer) }}" method="post">
         @csrf
@@ -30,4 +32,15 @@
         <input type="submit" value="削除する" onclick="if(!confirm('削除しますか？')){return false};">
     </form>
     <button onclick="location.href='{{ route('customers.index') }}'">一覧に戻る</button>
+@endsection
+
+@section('script')
+    @include('partial.map')
+    <script>
+        @if (!empty($customer)) 
+            L.marker([{{ $customer->latitude }},{{ $customer->longitude }}])
+                .bindPopup("{{ $customer->name }}", {closeButton: false})
+                .addTo(map);
+        @endif
+    </script>
 @endsection

@@ -24,5 +24,21 @@
             </tr>
         @endforeach
     </table>
+
+    <div id="map" style="height:50vh;"></div>
+
     <button onclick="location.href='/customers/post_code'">新規作成</button>
+@endsection
+
+@section('script')
+    @include('partial.map')
+    <script>
+        @if (!empty($customers))
+            @foreach ($customers as $customer)
+                L.marker([{{ $customer->latitude }},{{ $customer->longitude }}])
+                    .bindPopup('<a href="{{ route('customers.show', $customer) }}">{{ $customer->name }}</a>', {closeButton: false})
+                    .addTo(map);
+            @endforeach
+        @endif
+    </script>
 @endsection
