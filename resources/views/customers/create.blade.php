@@ -1,13 +1,8 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Create</title>
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-</head>
-<body>
+@extends('layouts.main')
+
+@section('title', '新規登録画面')
+
+@section('content')
     @if ($errors->any())
         <div class="error">
             <p>
@@ -46,6 +41,32 @@
         </div>
         <input type="submit" value="登録">
     </form>
+    {{-- map --}}
+    <input type="hidden" name="latitude" id="latitude">
+    <input type="hidden" name="longitude" id="longitude">
+    <div id="map" style="height:50vh;"></div>
+
     <button onclick="location.href='/customers/post_code'">郵便番号検索に戻る</button>
-</body>
-</html>
+@endsection
+
+@section('script')
+    @include('partial.map')
+    <script>
+        const lat = document.getElementById('latitude');
+        const lng = document.getElementById('longitude');
+        let clicked;
+        map.on('click', function(e) {
+            if (clicked !== true) {
+                clicked = true;
+                const marker = L.marker([e.latlng['lat'], e.latlng['lng']], {draggable: true}).addTo(map);
+                lat.value = e.latlng['lat'];
+                lng.value = e.latlng['lng'];
+                marker.on('dragend', function(e) {
+                // 座標は、e.target.getLatLng()で取得
+                    lat.value = e.target.getLatLng()['lat'];
+                    lng.value = e.target.getLatLng()['lng'];
+                });
+            }
+        });
+    </script>
+@endsection

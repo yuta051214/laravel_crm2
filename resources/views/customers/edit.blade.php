@@ -1,15 +1,8 @@
-<!DOCTYPE html>
-<html lang="ja">
+@extends('layouts.main')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Edit</title>
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-</head>
+@section('title', '編集画面')
 
-<body>
+@section('content')
     <h1>編集画面</h1>
     @if ($errors->any())
         <div class="error">
@@ -25,7 +18,7 @@
     @endif
 
     {{-- <form action="/customers/{{ $customer->id }}" method="post"> --}}
-        <form action="{{ route('customers.update', $customer) }}" method="post">
+    <form action="{{ route('customers.update', $customer) }}" method="post">
         @csrf
         @method('PATCH')
         <div>
@@ -38,7 +31,7 @@
         </div>
         <div>
             <label for="post_code">郵便番号</label>
-            <input type="text" name="post_code" id="post_code" value="{{ old("post_code", $customer->post_code) }}">
+            <input type="text" name="post_code" id="post_code" value="{{ old('post_code', $customer->post_code) }}">
         </div>
         <div>
             <label for="address">住所</label>
@@ -50,7 +43,32 @@
         </div>
         <input type="submit" value="更新">
     </form>
-    <button onclick="location.href='{{ 'customers.index' }}'">戻る</button>
-</body>
 
-</html>
+    <input type="hidden" id="latitude" name="latitude" value="{{ $customer->latitude }}">
+    <input type="hidden" id="longitude" name="longitude" value="{{ $customer->longitude }}">
+    <div id="map" style="height:50vh;"></div>
+
+    <button onclick="location.href='{{ route('customers.index') }}'">戻る</button>
+@endsection
+
+@section('script')
+    @include('partial.map')
+    <script>
+        const lat = document.getElementById('latitude');
+        const lng = document.getElementById('longitude');
+        @if (!empty($customer))
+            const marker = L.marker([{{ $customer->latitude }}, {{ $customer->longitude }}], {
+                    draggable: true
+                })
+                .bindPopup("{{ $customer->name }}", {
+                    closeButton: false
+                })
+                .addTo(map);
+            marker.on('dragend', function(e) {
+                // 座標は、e.target.getLatLng()で取得
+                lat.value = e.target.getLatLng()['lat'];
+                lng.value = e.target.getLatLng()['lng'];
+            });
+        @endif
+    </script>
+@endsection

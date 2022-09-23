@@ -1,13 +1,8 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Post_code</title>
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-</head>
-<body>
+@extends('layouts.main')
+
+@section('title', '郵便番号検索場面')
+
+@section('content')
     <h1>郵便番号検索画面</h1>
 
         @if (!empty($message))
@@ -22,6 +17,4 @@
         <input type="submit" value="検索">
     </form>
     <button onclick="location.href='{{ route('customers.index') }}'">一覧に戻る</button>
-
-</body>
-</html>
+@endsection

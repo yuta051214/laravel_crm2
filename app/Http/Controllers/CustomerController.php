@@ -20,7 +20,14 @@ class CustomerController extends Controller
     public function index()
     {
         $customers = Customer::all();
-        return view('customers.index', compact('customers'));
+        // return view('customers.index', compact('customers'));
+
+        // 取得したデータの中心地を求める
+        $latitude = $customers->average('latitude');
+        $longitude = $customers->average('longitude');
+        $zoom = 5;
+
+        return view('customers.index', compact('customers', 'latitude', 'longitude', 'zoom'));
     }
 
 
@@ -51,7 +58,10 @@ class CustomerController extends Controller
             $result = $zip_cloud['results'][0];
             $address = $result['address1'] . $result['address2'] . $result['address3'];
             $post_code = $result['zipcode'];
-            return view('customers.create', compact('address', 'post_code'));
+            $latitude = 35.658584;
+            $longitude = 139.7454316;
+            $zoom = 10;
+            return view('customers.create', compact('address', 'post_code', 'latitude', 'longitude', 'zoom'));
         } else {
             // エラー(statusが400、または500)時の処理
             $message = $zip_cloud['message'];
@@ -74,6 +84,8 @@ class CustomerController extends Controller
         $customer->post_code = $request->post_code;
         $customer->address = $request->address;
         $customer->tel = $request->tel;
+        $customer->latitude = $request->latitude;
+        $customer->longitude = $request->longitude;
         $customer->save();
         return redirect()->route('customers.index');
     }
@@ -87,7 +99,11 @@ class CustomerController extends Controller
     public function show($id)
     {
         $customer = Customer::find($id);
-        return view('customers.show', compact('customer'));
+        $latitude = $customer->latitude;
+        $longitude = $customer->longitude;
+        $zoom = 12;
+        
+        return view('customers.show', compact('customer', 'latitude', 'longitude', 'zoom'));
     }
 
     /**
@@ -99,7 +115,10 @@ class CustomerController extends Controller
     public function edit($id)
     {
         $customer = Customer::find($id);
-        return view('customers.edit', compact('customer'));
+        $latitude = $customer->latitude;
+        $longitude = $customer->longitude;
+        $zoom = 12;
+        return view('customers.edit', compact('customer', 'latitude', 'longitude', 'zoom'));
     }
 
     /**
@@ -117,6 +136,8 @@ class CustomerController extends Controller
         $customer->post_code = $request->post_code;
         $customer->address = $request->address;
         $customer->tel = $request->tel;
+        $customer->latitude = $request->latitude;
+        $customer->longitude = $request->longitude;
         $customer->save();
         return redirect()->route('customers.index');
     }
